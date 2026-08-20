@@ -1,34 +1,30 @@
 '''
-title: class nodo
-autor: rafael lopez gutierrez
-created:2023-04-11
-version: 1.0
+title: clase Nodo
+description: Clase Nodo para juego Tres en Raya (Matriz 3x3)
 '''
 
-class Node:
-    '''metodo que inicializa la clase nodo'''
-    '''self.__elemento  significa q es un atributo privado'''
-    '''def __getelemento  igul en fucniones si se pone con guion bajo se hace metodo privado'''
+class Nodo:
+    '''Método que inicializa la clase nodo'''
     def __init__(self):
-        self.Hizq=None
-        self.Hder=None
-        self.elemento=0   
-    '''@property'''
-    def getElemento(self):   
-        p=self.elemento
-        return (p)    
-    def gethijoizq(self):
-        p=self.Hizq   
-        return (p)
-    def gethijoder(self):
-        p=self.Hder   
-        return (p)   
+        # Matriz 3x3 para el tablero
+        self.tablero = [['-' for _ in range(3)] for _ in range(3)]
+        # Lista de hijos (hasta 9 posibles jugadas)
+        self.hijos = []
+        
+    # --- Getters y Setters ---
     
-    
-    '''@setelemento.setter'''
-    def setelemento(self,x):
-        self.elemento = x
-    def sethijoizq(self,x):
-        self.Hizq=x
-    def sethijoder(self,x):
-        self.Hder=x 
+    def getTablero(self):
+        return self.tablero
+        
+    def setTablero(self, tablero):
+        self.tablero = tablero
+        
+    def getHijos(self):
+        return self.hijos
+        
+    def setHijos(self, hijos):
+        self.hijos = hijos
+        
+    def agregarHijo(self, hijo):
+        if len(self.hijos) < 9:
+            self.hijos.append(hijo)
