@@ -1,6 +1,6 @@
 '''
-title: clase Nodo
-description: Clase Nodo para juego Tres en Raya (Matriz 3x3)
+título: Clase Nodo
+descripción: Clase Nodo para juego Tres en Raya (Matriz 3x3)
 '''
 
 class Nodo:

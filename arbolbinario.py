@@ -11,11 +11,33 @@ class Arbol:
         
     def setRaiz(self, raiz):
         self.raiz = raiz
+        
+    def contar_nodos(self, nodo):
+        # Recorrido simple para contar cuántos estados de juego se guardaron
+        if nodo is None:
+            return 0
+        total = 1
+        for hijo in nodo.getHijos():
+            total += self.contar_nodos(hijo)
+        return total
 
 def imprimir_tablero(tablero):
     for fila in tablero:
         print(" | ".join(fila))
     print("-" * 9)
+def verificar_ganador(tablero, jugador):
+    # Revisar filas y columnas
+    for i in range(3):
+        if tablero[i][0] == tablero[i][1] == tablero[i][2] == jugador:
+            return True
+        if tablero[0][i] == tablero[1][i] == tablero[2][i] == jugador:
+            return True
+    # Revisar diagonales
+    if tablero[0][0] == tablero[1][1] == tablero[2][2] == jugador:
+        return True
+    if tablero[0][2] == tablero[1][1] == tablero[2][0] == jugador:
+        return True
+    return False
 
 def main():
     a = Arbol()
@@ -24,10 +46,11 @@ def main():
     
     turno = 'X'
     jugadas = 0
+    ganador = False
     
     print("¡Bienvenido al Tres en Raya con Árboles!")
     
-    while jugadas < 9:
+    while jugadas < 9 and not ganador:
         print(f"\nTurno del jugador {turno}")
         imprimir_tablero(nodo_actual.getTablero())
         
@@ -47,26 +70,31 @@ def main():
             print("Esa casilla ya está ocupada.")
             continue
             
-        # Crear un nuevo nodo (nueva jugada)
         nuevo_nodo = Nodo()
-        
-        # Copiar el tablero actual al nuevo nodo
         nuevo_tablero = [f[:] for f in tablero_actual]
         nuevo_tablero[fila][col] = turno
         nuevo_nodo.setTablero(nuevo_tablero)
         
-        # Conectar el nuevo estado como hijo del estado anterior
         nodo_actual.agregarHijo(nuevo_nodo)
-        
-        # Moverse por el árbol hacia el nuevo hijo (avanzar el estado del juego)
-        # Como acabamos de agregarlo, es el último en la lista de hijos
         nodo_actual = nodo_actual.getHijos()[-1]
         
-        jugadas += 1
-        turno = 'O' if turno == 'X' else 'X'
+        if verificar_ganador(nodo_actual.getTablero(), turno):
+            ganador = True
+        else:
+            turno = 'O' if turno == 'X' else 'X'
+            jugadas += 1
         
     print("\n--- FIN DEL JUEGO ---")
     imprimir_tablero(nodo_actual.getTablero())
+    
+    if ganador:
+        print(f"¡El jugador {turno} ha GANADO!")
+    else:
+        print("¡Es un EMPATE!")
+        
+    # Recorrido del árbol para verificar que guarda los nodos
+    total = a.contar_nodos(a.getRaiz())
+    print(f"\n[Info del Árbol] Se han generado {total} nodos (estados del tablero) durante esta partida.")
 
 if __name__=='__main__':
     main()
